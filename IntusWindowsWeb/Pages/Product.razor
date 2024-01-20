@@ -1,0 +1,74 @@
+﻿@page "/Product/{Id}"
+@using IntusWindowsWeb.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
+
+<h3>Product</h3>
+
+@if (_product == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <div class="product-detail">
+        <h2>@_product.Name</h2>
+        <p>@_product.Description</p>
+        <p>Price: @_product.Price</p>
+        <p>Type: @_product.Type</p>
+        <p>Width: @_product.Width</p>
+        <p>Height: @_product.Height</p>
+        <button @onclick="() => NavigateToUpdateProduct(_product.Id)">Update Product</button>
+        <button @onclick="ConfirmDelete">Delete Product</button>
+    </div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; }
+
+    private ProductData? _product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _product = await Http.GetFromJsonAsync<ProductData>($"http://localhost:5145/api/Intus/product/{Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private void NavigateToUpdateProduct(int productId)
+    {
+        NavManager.NavigateTo($"/UpdateProduct/{productId}");
+    }
+    
+    private async Task DeleteProduct()
+    {
+        var response = await Http.DeleteAsync($"http://localhost:5145/api/Intus/product/{Id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavManager.NavigateTo("/Products");
+        }
+        else
+        {
+            Console.WriteLine($"Error: {response.StatusCode}");
+        }
+    }
+
+    private async Task ConfirmDelete()
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this product?");
+        if (confirmed)
+        {
+            await DeleteProduct();
+        }
+    }
+
+}

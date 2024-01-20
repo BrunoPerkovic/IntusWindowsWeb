@@ -1,0 +1,66 @@
+﻿@page "/UpdateProduct/{Id}"
+@using IntusWindowsWeb.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<h3>Update Product</h3>
+
+@if (_product == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <EditForm Model="_product" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <InputText id="name" @bind-Value="_product.Name"/>
+        <InputTextArea id="description" @bind-Value="_product.Description"/>
+        <InputNumber id="price" @bind-Value="_product.Price"/>
+        <InputSelect id="type" @bind-Value="_product.Type">
+            <option value="">Select a type...</option>
+            <option value="Window">Window</option>
+            <option value="Door">Door</option>
+        </InputSelect>
+        <InputNumber id="width" @bind-Value="_product.Width"/>
+        <InputNumber id="height" @bind-Value="_product.Height"/>
+
+        <button type="submit">Save</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public string Id { get; set; }
+
+    private ProductData? _product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _product = await Http.GetFromJsonAsync<ProductData>($"http://localhost:5145/api/Intus/product/{Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PutAsJsonAsync($"http://localhost:5145/api/Intus/product/{Id}", _product);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavManager.NavigateTo("/Products");
+        }
+        else
+        {
+            Console.WriteLine($"Error: {response.StatusCode}");
+        }
+    }
+
+}

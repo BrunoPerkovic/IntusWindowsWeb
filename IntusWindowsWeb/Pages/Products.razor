@@ -1,0 +1,63 @@
+﻿@page "/Products"
+@using IntusWindowsWeb.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<h3>Product</h3>
+
+@if (_products == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    foreach (var product in _products)
+    {
+        <div class="product-detail">
+            <h2>@product.Name</h2>
+            <p>@product.Description</p>
+            <p>Price: @product.Price</p>
+            <p>Type: @product.Type</p>
+            <p>Width: @product.Width</p>
+            <p>Height: @product.Height</p>
+        </div>
+    }
+
+    <button @onclick="PreviousPage" disabled="@(_pageNumber == 1)">Previous</button>
+    <span>Page @_pageNumber</span>
+    <button @onclick="NextPage">Next</button>
+}
+
+@code {
+    private int _pageNumber = 1;
+    private const int PageSize = 10;
+    private List<ProductData>? _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProducts(_pageNumber, PageSize);
+    }
+    
+    private async Task GetProducts(int pageNumber, int pageSize)
+    {
+        _products = await Http.GetFromJsonAsync<List<ProductData>>($"http://localhost:5145/api/Intus/product?pageNumber={pageNumber}&pageSize={pageSize}");
+    }
+    
+    private async Task PreviousPage()
+    {
+        if (_pageNumber > 1)
+        {
+            _pageNumber--;
+            await GetProducts(_pageNumber, PageSize);
+        }
+    }
+
+    private async Task NextPage()
+    {
+        _pageNumber++;
+        await GetProducts(_pageNumber, PageSize);
+    }
+
+}
