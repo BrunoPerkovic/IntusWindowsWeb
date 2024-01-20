@@ -1,0 +1,58 @@
+﻿@page "/UpdateOrder/{Id}"
+@using IntusWindowsWeb.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<h3>Update Order</h3>
+
+@if (_order == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <EditForm Model="_order" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+
+        <InputText id="name" @bind-Value="_order.Name"/>
+        <InputText id="State" @bind-Value="_order.State"/>
+
+        <button type="submit">Save</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public string Id { get; set; }
+
+    private OrderData? _order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _order = await Http.GetFromJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PutAsJsonAsync($"http://localhost:5145/api/Intus/order/{Id}", _order);
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavManager.NavigateTo($"/Order/{_order.Id}");
+        }
+        else
+        {
+            Console.WriteLine($"Error: {response.StatusCode}");
+        }
+    }
+
+}

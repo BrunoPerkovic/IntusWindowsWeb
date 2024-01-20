@@ -1,0 +1,37 @@
+﻿@page "/AddOrder"
+@using IntusWindowsWeb.Models
+@using System.Net
+@inject HttpClient Http
+
+<h3>AddOrder</h3>
+<PageTitle>Create Order</PageTitle>
+<h1>Create Order</h1>
+
+<EditForm Model="_order" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <InputText id="name" @bind-Value="_order.Name" placeholder="Name"/>
+    <InputText id="state" @bind-Value="_order.State" placeholder="State"></InputText>
+    
+    <button type="submit" class="btn btn-primary">Create Order</button>
+</EditForm>
+
+@code {
+    private OrderData _order = new OrderData();
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await Http.PostAsJsonAsync("http://localhost:5145/api/Intus/order", _order);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _order = new OrderData();
+        }
+        else
+        {
+            // Handle error
+        }
+    }
+                                                                    
+}

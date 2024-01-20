@@ -1,0 +1,75 @@
+﻿@page "/Orders"
+<h3>Orders</h3>
+@using IntusWindowsWeb.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<h3>Orders</h3>
+
+@if (_orders == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+
+else
+{
+    foreach (var order in _orders)
+    {
+        <div class="product-detail">
+            <h2 @onclick="() => NavigateToOrder(order.Id)">
+                @order.Id
+            </h2>
+            <p>
+                @order.Name
+            </p>
+            <p>
+                @order.State
+            </p>
+        </div>
+    }
+    
+    <button @onclick="PreviousPage" disabled="@(_pageNumber == 1)">Previous</button>
+    <span>Page @_pageNumber</span>
+    <button @onclick="NextPage">Next</button>
+}
+
+@code {
+
+    private int _pageNumber = 1;
+    private int _pageSize = 10;
+    private List<OrderData>? _orders;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await GetOrders(_pageNumber, _pageSize);
+    }
+    
+    private async Task GetOrders(int pageNumber, int pageSize)
+    {
+        _orders = await Http.GetFromJsonAsync<List<OrderData>>($"http://localhost:5145/api/Intus/order?pageNumber={pageNumber}&pageSize={pageSize}");
+    }
+    
+    private void NavigateToOrder(int orderId)
+    {
+        NavManager.NavigateTo($"/Order/{orderId}");
+    }
+    
+    private async Task PreviousPage()
+    {
+        if (_pageNumber > 1)
+        {
+            _pageNumber--;
+            await GetOrders(_pageNumber, _pageSize);
+        }
+    }
+
+    private async Task NextPage()
+    {
+        _pageNumber++;
+        await GetOrders(_pageNumber, _pageSize);
+    }
+    
+
+}

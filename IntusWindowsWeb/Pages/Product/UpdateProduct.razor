@@ -55,7 +55,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            NavManager.NavigateTo("/Products");
+            NavManager.NavigateTo($"/Product/{_product.Id}");
         }
         else
         {

@@ -11,11 +11,13 @@
         <em>Loading...</em>
     </p>
 }
+
 else
 {
     foreach (var product in _products)
     {
         <div class="product-detail">
+            <h2 @onclick="() => NavigateToProduct(product.Id)">@product.Id</h2>
             <h2>@product.Name</h2>
             <p>@product.Description</p>
             <p>Price: @product.Price</p>
@@ -32,12 +34,17 @@ else
 
 @code {
     private int _pageNumber = 1;
-    private const int PageSize = 10;
+    private int _pageSize = 10;
     private List<ProductData>? _products;
 
     protected override async Task OnInitializedAsync()
     {
-        await GetProducts(_pageNumber, PageSize);
+        await GetProducts(_pageNumber, _pageSize);
+    }
+    
+    private void NavigateToProduct(int productId)
+    {
+        NavManager.NavigateTo($"/Product/{productId}");
     }
     
     private async Task GetProducts(int pageNumber, int pageSize)
@@ -50,14 +57,13 @@ else
         if (_pageNumber > 1)
         {
             _pageNumber--;
-            await GetProducts(_pageNumber, PageSize);
+            await GetProducts(_pageNumber, _pageSize);
         }
     }
 
     private async Task NextPage()
     {
         _pageNumber++;
-        await GetProducts(_pageNumber, PageSize);
+        await GetProducts(_pageNumber, _pageSize);
     }
-
 }

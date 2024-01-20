@@ -9,6 +9,6 @@ public class ProductData : DbBase
     public decimal Price { get; set; }
     public ProductType Type { get; set; }
     public int Width { get; set; }
-    public int Height { get; set; }
+    public decimal Height { get; set; }
     public List<OrderProduct> OrderProducts { get; set; }
 }

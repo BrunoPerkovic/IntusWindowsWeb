@@ -1,0 +1,70 @@
+﻿@page "/Order/{Id}"
+@using IntusWindowsWeb.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
+
+<h3>Order</h3>
+
+@if (_order == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+
+else
+{
+    <div class="product-detail">
+        <h2>@_order.Name</h2>
+        <h3>@_order.State</h3>
+        <button @onclick="() => NavigateToUpdateOrder(_order.Id)">Update Order</button>
+        <button @onclick="ConfirmDelete">Delete Order</button>
+    </div>
+}
+
+@code {
+    [Parameter] public string Id { get; set; }
+
+    private OrderData? _order;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _order = await Http.GetFromJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private void NavigateToUpdateOrder(int orderId)
+    {
+        NavManager.NavigateTo($"/UpdateOrder/{orderId}");
+    }
+    
+    private async Task DeleteOrder()
+    {
+        var response = await Http.DeleteAsync($"http://localhost:5145/api/Intus/order/{Id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavManager.NavigateTo("/Orders");
+        }
+        else
+        {
+            Console.WriteLine($"Error: {response.StatusCode}");
+        }
+    }
+
+    private async Task ConfirmDelete()
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this order?");
+        if (confirmed)
+        {
+            await DeleteOrder();
+        }
+    }
+}
