@@ -20,6 +20,21 @@ else
         <h3>@_order.State</h3>
         <button @onclick="() => NavigateToUpdateOrder(_order.Id)">Update Order</button>
         <button @onclick="ConfirmDelete">Delete Order</button>
+        @if (_orderProducts != null)
+                {
+                    <h3>Products in this order:</h3>
+                    <ul>
+                        @foreach (var orderProduct in _orderProducts)
+                        {
+                            <h2>@orderProduct.Name</h2>
+                            <p>@orderProduct.Description</p>
+                            <p>Price: @orderProduct.Price</p>
+                            <p>Type: @orderProduct.Type</p>
+                            <p>Width: @orderProduct.Width</p>
+                            <p>Height: @orderProduct.Height</p>                            
+                        }
+                    </ul>
+                }
     </div>
 }
 
@@ -27,12 +42,14 @@ else
     [Parameter] public string Id { get; set; }
 
     private OrderData? _order;
+    private List<ProductData> _orderProducts;
     
     protected override async Task OnInitializedAsync()
     {
         try
         {
             _order = await Http.GetFromJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{Id}");
+            _orderProducts = await Http.GetFromJsonAsync<List<ProductData>>($"http://localhost:5145/api/Intus/product/{_order.Id}/order");
         }
         catch (Exception ex)
         {

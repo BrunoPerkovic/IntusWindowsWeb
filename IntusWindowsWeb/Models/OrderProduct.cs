@@ -1,6 +1,4 @@
-﻿using IntusWindowsWeb.Models;
-
-namespace IntusWindowsAPI.BL.Data;
+﻿namespace IntusWindowsWeb.Models;
 
 public class OrderProduct : DbBase
 {

@@ -23,6 +23,18 @@ else
         <p>Height: @_product.Height</p>
         <button @onclick="() => NavigateToUpdateProduct(_product.Id)">Update Product</button>
         <button @onclick="ConfirmDelete">Delete Product</button>
+        <button @onclick="GetOrders">Get Orders</button>
+        @if (_orders != null)
+        {
+            <select @onchange="OrderSelected">
+                <option value="">Select an order...</option>
+                @foreach (var order in _orders)
+                {
+                    <option value="@order.Id">@order.Name</option>
+                }
+            </select>
+            <button @onclick="() => AddProductToOrder(_product.Id, _selectedOrder)" disabled="@string.IsNullOrEmpty(_selectedOrder)">Add to Order</button>
+        }
     </div>
 }
 
@@ -30,6 +42,8 @@ else
     [Parameter] public string Id { get; set; }
 
     private ProductData? _product;
+    private List<OrderData>? _orders;
+    private string _selectedOrder;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,7 +61,7 @@ else
     {
         NavManager.NavigateTo($"/UpdateProduct/{productId}");
     }
-    
+
     private async Task DeleteProduct()
     {
         var response = await Http.DeleteAsync($"http://localhost:5145/api/Intus/product/{Id}");
@@ -69,5 +83,25 @@ else
         {
             await DeleteProduct();
         }
+    }
+
+    private async Task GetOrders()
+    {
+        _orders = await Http.GetFromJsonAsync<List<OrderData>>("http://localhost:5145/api/Intus/order");
+    }
+
+    private async Task AddProductToOrder(int productId, string orderId)
+    {
+        var response = await Http.PutAsJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{orderId}/product/add/{productId}", null);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"Error: {response.StatusCode}");
+        }
+    }
+
+    private void OrderSelected(ChangeEventArgs e)
+    {
+        _selectedOrder = e.Value.ToString();
     }
 }
