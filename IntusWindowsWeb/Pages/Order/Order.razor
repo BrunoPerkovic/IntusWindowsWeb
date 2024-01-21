@@ -42,7 +42,7 @@ else
     [Parameter] public string Id { get; set; }
 
     private OrderData? _order;
-    private List<ProductData> _orderProducts;
+    private List<ProductData>? _orderProducts;
     
     protected override async Task OnInitializedAsync()
     {
