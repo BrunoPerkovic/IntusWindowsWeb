@@ -18,20 +18,23 @@ else
     <div class="product-detail">
         <h2>Order Name: @_order.Name</h2>
         <h3>Order State: @_order.State</h3>
-        <button @onclick="() => NavigateToUpdateOrder(_order.Id)">Update Order</button>
-        <button @onclick="ConfirmDelete">Delete Order</button>
+        <button class="btn-update" @onclick="() => NavigateToUpdateOrder(_order.Id)">Update Order</button>
+        <button class="btn-delete" @onclick="ConfirmDelete">Delete Order</button>
         @if (_orderProducts != null)
         {
             <h3>Products in this order:</h3>
             <ul>
                 @foreach (var orderProduct in _orderProducts)
                 {
-                    <h2>Order Name: @orderProduct.Name</h2>
-                    <p>Order: @orderProduct.Description</p>
-                    <p>Price: @orderProduct.Price</p>
-                    <p>Type: @orderProduct.Type</p>
-                    <p>Width: @orderProduct.Width</p>
-                    <p>Height: @orderProduct.Height</p>
+                    <div class="product-card order-product-card">
+
+                        <h2>Order Name: @orderProduct.Name</h2>
+                        <p>Order: @orderProduct.Description</p>
+                        <p>Price: @orderProduct.Price</p>
+                        <p>Type: @orderProduct.Type</p>
+                        <p>Width: @orderProduct.Width</p>
+                        <p>Height: @orderProduct.Height</p>
+                    </div>
                 }
             </ul>
         }
@@ -51,6 +54,15 @@ else
         {
             _order = await Http.GetFromJsonAsync<OrderData>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order/{Id}");
             _orderProducts = await Http.GetFromJsonAsync<List<ProductData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/product/{_order.Id}/order");
+
+            if (_orderProducts == null)
+            {
+                Console.WriteLine("_orderProducts is null");
+            }
+            else
+            {
+                Console.WriteLine(_orderProducts);
+            }
         }
         catch (Exception ex)
         {

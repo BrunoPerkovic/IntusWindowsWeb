@@ -14,16 +14,16 @@
 }
 else
 {
-    <div class="product-detail">
+    <div class="product-card">
         <h2>@_product.Name</h2>
         <p>@_product.Description</p>
         <p>Price: @_product.Price</p>
         <p>Type: @_product.Type</p>
         <p>Width: @_product.Width</p>
         <p>Height: @_product.Height</p>
-        <button @onclick="() => NavigateToUpdateProduct(_product.Id)">Update Product</button>
-        <button @onclick="ConfirmDelete">Delete Product</button>
-        <button @onclick="GetOrders">Get Orders</button>
+        <button class="btn-update" @onclick="() => NavigateToUpdateProduct(_product.Id)">Update Product</button>
+        <button class="btn-delete" @onclick="ConfirmDelete">Delete Product</button>
+        <button class="btn-get-orders" @onclick="GetOrders">Get Orders</button>
         @if (_orders != null)
         {
             <select @onchange="OrderSelected">
@@ -33,7 +33,7 @@ else
                     <option value="@order.Id">@order.Name</option>
                 }
             </select>
-            <button @onclick="() => AddProductToOrder(_product.Id, _selectedOrder)" disabled="@string.IsNullOrEmpty(_selectedOrder)">Add to Order</button>
+            <button class="btn-add-to-order" @onclick="() => AddProductToOrder(_product.Id, _selectedOrder)" disabled="@string.IsNullOrEmpty(_selectedOrder)">Add to Order</button>
         }
     </div>
 }

@@ -2,7 +2,8 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+    background: linear-gradient(45deg, #f5f5dc, #deb887); /* Gradient from beige to burlywood */
+    color: #000000;}
 
 h1:focus {
     outline: none;
@@ -117,4 +118,47 @@ a, .btn-link {
 .product-detail p {
     color: #666;
     line-height: 1.6;
+}
+
+.product-card {
+    background-color: #f7a8a4;
+    border-radius: 15px;
+    padding: 20px;
+    color: #ffffff;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.product-card h2 {
+    color: #ffdd57;
+}
+
+.product-card p {
+    color: #ffffff;
+}
+
+.btn-update, .btn-delete, .btn-get-orders, .btn-add-to-order {
+    background-color: #ffdd57;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.btn-update:hover, .btn-delete:hover, .btn-get-orders:hover, .btn-add-to-order:hover {
+    background-color: #f7a8a4;
+    color: white;
+}
+.order-product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
