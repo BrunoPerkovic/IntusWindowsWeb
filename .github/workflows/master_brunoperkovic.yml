@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - bruno-perkovic
+name: Build and deploy ASP.Net Core app to Azure Web App - brunoperkovic
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
@@ -52,15 +52,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A082D37F72314363A4EA5BA08558A14E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D26513BB979F4542A56CDD38A2EDFA7B }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A12DDE6D202B4955B8C1495EBC308B3D }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_773948E96979418B8E678FB8D2F25F8C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_79D309A9C2F54E6A809A16424AA94479 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_610AA5196FDE4F6596BF5D32BEC1BC77 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'bruno-perkovic'
+          app-name: 'brunoperkovic'
           slot-name: 'Production'
           package: .
           
