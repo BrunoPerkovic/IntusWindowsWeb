@@ -49,7 +49,7 @@ else
     
     private async Task GetOrders(int pageNumber, int pageSize)
     {
-        _orders = await Http.GetFromJsonAsync<List<OrderData>>($"{ApiBase}:5145/api/Intus/order?pageNumber={pageNumber}&pageSize={pageSize}");
+        _orders = await Http.GetFromJsonAsync<List<OrderData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order");
     }
     
     private void NavigateToOrder(int orderId)

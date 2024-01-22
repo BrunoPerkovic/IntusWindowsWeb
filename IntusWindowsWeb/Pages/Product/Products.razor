@@ -51,7 +51,7 @@ else
     
     private async Task GetProducts(int pageNumber, int pageSize)
     {
-        _products = await Http.GetFromJsonAsync<List<ProductData>>($"{ApiBase}:5145/api/Intus/product?pageNumber={pageNumber}&pageSize={pageSize}");
+        _products = await Http.GetFromJsonAsync<List<ProductData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/product");
     }
     
     private async Task PreviousPage()
