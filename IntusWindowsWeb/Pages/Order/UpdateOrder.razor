@@ -35,7 +35,7 @@ else
     {
         try
         {
-            _order = await Http.GetFromJsonAsync<OrderData>($"intus-web-bruno-perkovic.azurewebsites.net/api/Intus/order/{Id}");
+            _order = await Http.GetFromJsonAsync<OrderData>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order/{Id}");
         }
         catch (Exception ex)
         {
@@ -45,7 +45,7 @@ else
 
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PutAsJsonAsync($"intus-web-bruno-perkovic.azurewebsites.net/api/Intus/order/{Id}", _order);
+        var response = await Http.PutAsJsonAsync($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order/{Id}", _order);
 
         if (response.IsSuccessStatusCode)
         {

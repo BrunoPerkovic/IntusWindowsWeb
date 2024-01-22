@@ -24,7 +24,7 @@
 
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PostAsJsonAsync($"intus-web-bruno-perkovic.azurewebsites.net/api/Intus/order", _order);
+        var response = await Http.PostAsJsonAsync($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order", _order);
 
         if (response.IsSuccessStatusCode)
         {

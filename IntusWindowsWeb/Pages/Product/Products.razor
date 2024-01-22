@@ -26,10 +26,6 @@ else
             <p>Height: @product.Height</p>
         </div>
     }
-
-    <button @onclick="PreviousPage" disabled="@(_pageNumber == 1)">Previous</button>
-    <span>Page @_pageNumber</span>
-    <button @onclick="NextPage">Next</button>
 }
 
 @code {
