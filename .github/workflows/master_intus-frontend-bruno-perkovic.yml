@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'intus-frontend-bruno-perkovic'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A2A6C1D36B164D01A92319F700240914 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B0D1E33B129F43F0BD378E6865F6BCA4 }}
           package: .
