@@ -39,6 +39,7 @@ else
 }
 
 @code {
+    private const string ApiBase = "intus-web-bruno-perkovic.azurewebsites.net";
     [Parameter] public string Id { get; set; }
 
     private OrderData? _order;
@@ -48,8 +49,9 @@ else
     {
         try
         {
-            _order = await Http.GetFromJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{Id}");
-            _orderProducts = await Http.GetFromJsonAsync<List<ProductData>>($"http://localhost:5145/api/Intus/product/{_order.Id}/order");
+           // _order = await Http.GetFromJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{Id}");
+            _order = await Http.GetFromJsonAsync<OrderData>($"{ApiBase}:5145/api/Intus/order/{Id}");
+            _orderProducts = await Http.GetFromJsonAsync<List<ProductData>>($"{ApiBase}:5145/api/Intus/product/{_order.Id}/order");
         }
         catch (Exception ex)
         {
@@ -64,7 +66,7 @@ else
     
     private async Task DeleteOrder()
     {
-        var response = await Http.DeleteAsync($"http://localhost:5145/api/Intus/order/{Id}");
+        var response = await Http.DeleteAsync($"{ApiBase}5145/api/Intus/order/{Id}");
 
         if (response.IsSuccessStatusCode)
         {

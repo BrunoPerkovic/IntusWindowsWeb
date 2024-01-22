@@ -33,6 +33,8 @@ else
 }
 
 @code {
+    private const string ApiBase = "intus-web-bruno-perkovic.azurewebsites.net";
+
     private int _pageNumber = 1;
     private int _pageSize = 10;
     private List<ProductData>? _products;
@@ -49,7 +51,7 @@ else
     
     private async Task GetProducts(int pageNumber, int pageSize)
     {
-        _products = await Http.GetFromJsonAsync<List<ProductData>>($"http://localhost:5145/api/Intus/product?pageNumber={pageNumber}&pageSize={pageSize}");
+        _products = await Http.GetFromJsonAsync<List<ProductData>>($"{ApiBase}:5145/api/Intus/product?pageNumber={pageNumber}&pageSize={pageSize}");
     }
     
     private async Task PreviousPage()

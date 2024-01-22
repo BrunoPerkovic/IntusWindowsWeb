@@ -33,6 +33,8 @@ else
 }
 
 @code {
+    private const string ApiBase = "intus-web-bruno-perkovic.azurewebsites.net";
+
     [Parameter] public string Id { get; set; }
 
     private ProductData? _product;
@@ -41,7 +43,7 @@ else
     {
         try
         {
-            _product = await Http.GetFromJsonAsync<ProductData>($"http://localhost:5145/api/Intus/product/{Id}");
+            _product = await Http.GetFromJsonAsync<ProductData>($"{ApiBase}:5145/api/Intus/product/{Id}");
         }
         catch (Exception ex)
         {
@@ -51,7 +53,7 @@ else
 
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PutAsJsonAsync($"http://localhost:5145/api/Intus/product/{Id}", _product);
+        var response = await Http.PutAsJsonAsync($"{ApiBase}:5145/api/Intus/product/{Id}", _product);
 
         if (response.IsSuccessStatusCode)
         {

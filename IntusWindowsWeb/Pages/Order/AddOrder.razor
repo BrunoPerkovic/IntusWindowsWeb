@@ -18,11 +18,13 @@
 </EditForm>
 
 @code {
+    private const string ApiBase = "intus-web-bruno-perkovic.azurewebsites.net";
+
     private OrderData _order = new OrderData();
 
     private async Task HandleValidSubmit()
     {
-        var response = await Http.PostAsJsonAsync("http://localhost:5145/api/Intus/order", _order);
+        var response = await Http.PostAsJsonAsync($"{ApiBase}:5145/api/Intus/order", _order);
 
         if (response.IsSuccessStatusCode)
         {

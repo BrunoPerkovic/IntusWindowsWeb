@@ -39,6 +39,8 @@ else
 }
 
 @code {
+    private const string ApiBase = "intus-web-bruno-perkovic.azurewebsites.net";
+
     [Parameter] public string Id { get; set; }
 
     private ProductData? _product;
@@ -49,7 +51,7 @@ else
     {
         try
         {
-            _product = await Http.GetFromJsonAsync<ProductData>($"http://localhost:5145/api/Intus/product/{Id}");
+            _product = await Http.GetFromJsonAsync<ProductData>($"{ApiBase}:5145/api/Intus/product/{Id}");
         }
         catch (Exception ex)
         {
@@ -64,7 +66,7 @@ else
 
     private async Task DeleteProduct()
     {
-        var response = await Http.DeleteAsync($"http://localhost:5145/api/Intus/product/{Id}");
+        var response = await Http.DeleteAsync($"{ApiBase}:5145/api/Intus/product/{Id}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -87,12 +89,12 @@ else
 
     private async Task GetOrders()
     {
-        _orders = await Http.GetFromJsonAsync<List<OrderData>>("http://localhost:5145/api/Intus/order");
+        _orders = await Http.GetFromJsonAsync<List<OrderData>>($"{ApiBase}:5145/api/Intus/order");
     }
 
     private async Task AddProductToOrder(int productId, string orderId)
     {
-        var response = await Http.PutAsJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{orderId}/product/add/{productId}", null);
+        var response = await Http.PutAsJsonAsync<OrderData>($"{ApiBase}:5145/api/Intus/order/{orderId}/product/add/{productId}", null);
 
         if (!response.IsSuccessStatusCode)
         {
