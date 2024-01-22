@@ -17,8 +17,8 @@ else
 {
     foreach (var order in _orders)
     {
-        <div class="product-detail">
-            <h2 @onclick="() => NavigateToOrder(order.Id)">
+        <div class="product-detail" @onclick="() => NavigateToOrder(order.Id)">
+            <h2>
                 @order.Id
             </h2>
             <p>
@@ -37,22 +37,22 @@ else
     private int _pageNumber = 1;
     private int _pageSize = 10;
     private List<OrderData>? _orders;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await GetOrders(_pageNumber, _pageSize);
     }
-    
+
     private async Task GetOrders(int pageNumber, int pageSize)
     {
         _orders = await Http.GetFromJsonAsync<List<OrderData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order");
     }
-    
+
     private void NavigateToOrder(int orderId)
     {
         NavManager.NavigateTo($"/Order/{orderId}");
     }
-    
+
     private async Task PreviousPage()
     {
         if (_pageNumber > 1)

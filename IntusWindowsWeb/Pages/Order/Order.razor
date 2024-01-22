@@ -16,25 +16,25 @@
 else
 {
     <div class="product-detail">
-        <h2>@_order.Name</h2>
-        <h3>@_order.State</h3>
+        <h2>Order Name: @_order.Name</h2>
+        <h3>Order State: @_order.State</h3>
         <button @onclick="() => NavigateToUpdateOrder(_order.Id)">Update Order</button>
         <button @onclick="ConfirmDelete">Delete Order</button>
         @if (_orderProducts != null)
+        {
+            <h3>Products in this order:</h3>
+            <ul>
+                @foreach (var orderProduct in _orderProducts)
                 {
-                    <h3>Products in this order:</h3>
-                    <ul>
-                        @foreach (var orderProduct in _orderProducts)
-                        {
-                            <h2>@orderProduct.Name</h2>
-                            <p>@orderProduct.Description</p>
-                            <p>Price: @orderProduct.Price</p>
-                            <p>Type: @orderProduct.Type</p>
-                            <p>Width: @orderProduct.Width</p>
-                            <p>Height: @orderProduct.Height</p>                            
-                        }
-                    </ul>
+                    <h2>Order Name: @orderProduct.Name</h2>
+                    <p>Order: @orderProduct.Description</p>
+                    <p>Price: @orderProduct.Price</p>
+                    <p>Type: @orderProduct.Type</p>
+                    <p>Width: @orderProduct.Width</p>
+                    <p>Height: @orderProduct.Height</p>
                 }
+            </ul>
+        }
     </div>
 }
 
@@ -44,14 +44,13 @@ else
 
     private OrderData? _order;
     private List<ProductData>? _orderProducts;
-    
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-           // _order = await Http.GetFromJsonAsync<OrderData>($"http://localhost:5145/api/Intus/order/{Id}");
             _order = await Http.GetFromJsonAsync<OrderData>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order/{Id}");
-            _orderProducts = await Http.GetFromJsonAsync<List<ProductData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order");
+            _orderProducts = await Http.GetFromJsonAsync<List<ProductData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/product/{_order.Id}/order");
         }
         catch (Exception ex)
         {
@@ -63,7 +62,7 @@ else
     {
         NavManager.NavigateTo($"/UpdateOrder/{orderId}");
     }
-    
+
     private async Task DeleteOrder()
     {
         var response = await Http.DeleteAsync($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/order/{Id}");
@@ -86,4 +85,7 @@ else
             await DeleteOrder();
         }
     }
+
+}
+
 }

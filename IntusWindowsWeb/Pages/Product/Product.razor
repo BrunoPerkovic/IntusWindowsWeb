@@ -51,7 +51,7 @@ else
     {
         try
         {
-            _product = await Http.GetFromJsonAsync<ProductData>($"intus-web-bruno-perkovic.azurewebsites.net/api/Intus/product/{Id}");
+            _product = await Http.GetFromJsonAsync<ProductData>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/Intus/product/{Id}");
         }
         catch (Exception ex)
         {

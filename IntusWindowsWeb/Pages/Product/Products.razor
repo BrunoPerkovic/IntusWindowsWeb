@@ -1,9 +1,10 @@
 ﻿@page "/Products"
+<h3>Products</h3>
 @using IntusWindowsWeb.Models
 @inject HttpClient Http
 @inject NavigationManager NavManager
 
-<h3>All Products</h3>
+<h3>Products</h3>
 
 @if (_products == null)
 {
@@ -16,14 +17,16 @@ else
 {
     foreach (var product in _products)
     {
-        <div class="product-detail">
-            <h2 @onclick="() => NavigateToProduct(product.Id)">@product.Id</h2>
-            <h2>@product.Name</h2>
-            <p>@product.Description</p>
-            <p>Price: @product.Price</p>
-            <p>Type: @product.Type</p>
-            <p>Width: @product.Width</p>
-            <p>Height: @product.Height</p>
+        <div class="product-detail" @onclick="() => NavigateToProduct(product.Id)">
+            <h2>
+                @product.Name
+            </h2>
+            <p>
+                @product.Description
+            </p>
+            <p>
+                Price: @product.Price
+            </p>
         </div>
     }
 }
@@ -39,17 +42,17 @@ else
     {
         await GetProducts(_pageNumber, _pageSize);
     }
-    
-    private void NavigateToProduct(int productId)
-    {
-        NavManager.NavigateTo($"/Product/{productId}");
-    }
-    
+
     private async Task GetProducts(int pageNumber, int pageSize)
     {
         _products = await Http.GetFromJsonAsync<List<ProductData>>($"https://intus-web-bruno-perkovic.azurewebsites.net/api/intus/product");
     }
-    
+
+    private void NavigateToProduct(int productId)
+    {
+        NavManager.NavigateTo($"/Product/{productId}");
+    }
+
     private async Task PreviousPage()
     {
         if (_pageNumber > 1)
