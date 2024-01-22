@@ -162,3 +162,15 @@ a, .btn-link {
     align-items: center;
     text-align: center;
 }
+
+.column-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.column-layout > * {
+    width: 100%;
+    max-width: 300px;
+}

@@ -10,16 +10,18 @@
     <DataAnnotationsValidator/>
     <ValidationSummary/>
 
-    <InputText id="name" @bind-Value="_product.Name" placeholder="Name"/>
-    <InputTextArea id="description" @bind-Value="_product.Description" placeholder="Description"/>
-    <InputNumber id="price" @bind-Value="_product.Price" placeholder="Price"/>
-    <InputSelect id="type" @bind-Value="_product.Type">
-        <option value="">Select a type...</option>
-        <option value="Window">Window</option>
-        <option value="Door">Door</option>
-    </InputSelect>
-    <InputNumber id="width" @bind-Value="_product.Width" placeholder="Width"/>
-    <InputNumber id="height" @bind-Value="_product.Height" placeholder="Height"/>
+    <div class="column-layout">
+        <InputText id="name" @bind-Value="_product.Name" placeholder="Name"/>
+        <InputTextArea id="description" @bind-Value="_product.Description" placeholder="Description"/>
+        <InputNumber id="price" @bind-Value="_product.Price" placeholder="Price"/>
+        <InputSelect id="type" @bind-Value="_product.Type">
+            <option value="" selected="">Select a type...</option>
+            <option value="Window">Window</option>
+            <option value="Door">Door</option>
+        </InputSelect>
+        <InputNumber id="width" @bind-Value="_product.Width" placeholder="Width"/>
+        <InputNumber id="height" @bind-Value="_product.Height" placeholder="Height"/>
+    </div>
 
     <button type="submit" class="btn btn-primary">Create Product</button>
 </EditForm>
