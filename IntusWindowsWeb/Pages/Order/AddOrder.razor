@@ -1,6 +1,5 @@
 ﻿@page "/AddOrder"
 @using IntusWindowsWeb.Models
-@using System.Net
 @inject HttpClient Http
 
 <h3>AddOrder</h3>
@@ -29,10 +28,6 @@
         if (response.IsSuccessStatusCode)
         {
             _order = new OrderData();
-        }
-        else
-        {
-            // Handle error
         }
     }
                                                                     
